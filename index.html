@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--This is how you comment for html-->
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+    <title> My Map </title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
+<style>
+    /*this CSS section is where you style your page*/
+    /*this is how you comment in CSS*/
+	     body { margin: 0; padding: 0; }
+	     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+       .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+          }
+      </style>
+  </head>
+  <body>
+    <div id='map'></div>
+    <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoianVsaWFtY2tlb3duIiwiYSI6ImNrZ3pudXZ3cTAyYnEyeW1oMjh1Z3BxenIifQ.h9XL8l_sX72TjYH6Hcc8MQ';
+
+    //Call in your Map
+    var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/juliamckeown/ckgzm1zmb1q7o19mpqi30vf86'
+    });
+    // Initialize the geolocate control.
+  var geolocate = new mapboxgl.GeolocateControl({
+        positionOptions: {
+        enableHighAccuracy: true
+          },
+        trackUserLocation: true
+        });
+
+  // Add the control to the map.
+    map.addControl(geolocate);
+    map.on('load', function() {
+    geolocate.trigger();
+    map.addSource('places', {
+              'type': 'geojson',
+              'data':
+              {
+      'type': 'FeatureCollection',
+      'features': [
+        {
+          'type': 'Feature',
+          'properties': {
+            'title': 'Spot on the grass',
+            'description': 'Good place to sit, smoke, laugh with a friend, get some sun, do some writing. Keeping me sane during the pandemic and a place I’ve met with and brought so many people to and come alone.'
+          },
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [
+              -122.25662,
+              37.861353
+            ]
+          }
+        },
+        {
+          'type': 'Feature',
+          'properties': {
+            'title': 'Derby Market',
+            'description': 'My neighborhood shop, where they know me and always tell me when the strawberries are coming in. One stop neighborhood shop.'
+          },
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [
+              -122.25345,
+              37.861763
+            ]
+          }
+        },
+        {
+          'type': 'Feature',
+          'properties': {
+            'title': 'Sunset Watching Spot',
+            'description': 'A space of potentiality, some day I will bring *someone* here with takeout and cocktails and we’ll watch the sunset until the people who own the house of this garage kick us off this roof.'
+          },
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [
+              -122.24912,
+              37.859863
+            ]
+          }
+        },
+        {
+          'type': 'Feature',
+          'properties': {
+            'title': 'Views',
+            'description': 'Oakland to the left and the Bay off to the right, all rising over/through the mod windows of this $$$ house. At night it’s all lights.'
+          },
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [
+              -122.24776,
+              37.859718
+            ]
+          }
+        },
+        {
+          'type': 'Feature',
+          'properties': {
+            'title': 'Magical Pedestrian Alleyway',
+            'description': 'Where Buddy the found dog ate all the apples on the ground and I decided to make sure he got home.'
+          },
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [
+              -122.24865,
+              37.858858
+            ]
+          }
+        },
+        {
+          'type': 'Feature',
+          'properties': {
+            'title': 'Poetry House',
+            'description': 'The street I was going to skip tonight for sake of time and to-do lists, but Buddy led me there anyway. Some day I will write a poem for him and attach it to that famous fence.'
+          },
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [
+              -122.25042,
+              37.858719
+            ]
+          }
+        }
+      ]
+    }
+  }); // features
+  // Add a layer showing the places.
+      map.addLayer({
+          'id': 'places',
+          'type': 'symbol',
+          'source': 'places',
+          'layout': {
+              'icon-image': 'windmill-15',
+              'icon-allow-overlap': true
+          }
+      });
+}); // map on load
+// When a click event occurs on a feature in the places layer, open a popup at the
+      // location of the feature, with description HTML from its properties.
+      map.on('click', 'places', function(e) {
+          var coordinates = e.features[0].geometry.coordinates.slice();
+          var description = e.features[0].properties.description;
+          var title = e.features[0].properties.title;
+          new mapboxgl.Popup()
+              .setLngLat(coordinates)
+              .setHTML('<h3>' + title + '</h3><p>' + description + '</p>')
+              .addTo(map);
+      });
+    </script>
+  </body>
+</html>
